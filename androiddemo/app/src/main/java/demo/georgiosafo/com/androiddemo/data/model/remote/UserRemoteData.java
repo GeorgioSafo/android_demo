@@ -1,23 +1,32 @@
 package demo.georgiosafo.com.androiddemo.data.model.remote;
 
+import com.google.gson.annotations.SerializedName;
+
 /**
  * Created by gevorksafaryan on 18.04.17.
  */
 
 public class UserRemoteData {
-    @SerializedName("user_id");
+
+    @SerializedName("user_id")
     private String serverId;
-    @SerializedName("first_name");
+
+    @SerializedName("first_name")
     private String firstName;
-    @SerializedName("last_name");
+
+    @SerializedName("last_name")
     private String lastName;
-    @SerializedName("middle_name");
+
+    @SerializedName("middle_name")
     private String middleName;
-    @SerializedName("email");
+
+    @SerializedName("email")
     private String email;
-    @SerializedName("age");
+
+    @SerializedName("age")
     private Integer age;
-    @SerializedName("avatar");
+
+    @SerializedName("avatar")
     private String avatarUrl;
 
     public String getServerId() {
