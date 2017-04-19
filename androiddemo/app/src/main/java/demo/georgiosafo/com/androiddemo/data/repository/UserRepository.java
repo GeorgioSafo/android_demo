@@ -10,7 +10,7 @@ import demo.georgiosafo.com.androiddemo.data.repository.store.UserDataLocalStore
 import demo.georgiosafo.com.androiddemo.data.repository.store.UserDataRemoteStore;
 
 /**
- * Created by gevorksafaryan on 18.04.17.
+ * Created by gevorksafaryan on 19.04.17.
  */
 
 public class UserRepository implements IDataRepository<ArrayList<UserLocalData>> {
