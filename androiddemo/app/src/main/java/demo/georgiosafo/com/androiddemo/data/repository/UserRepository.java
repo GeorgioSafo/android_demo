@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import demo.georgiosafo.com.androiddemo.data.model.local.UserLocalData;
+import demo.georgiosafo.com.androiddemo.data.repository.interfaces.IDataLocalStore;
+import demo.georgiosafo.com.androiddemo.data.repository.interfaces.IDataRemoteStore;
 import demo.georgiosafo.com.androiddemo.data.repository.interfaces.IDataRepository;
 import demo.georgiosafo.com.androiddemo.data.repository.store.UserDataLocalStore;
 import demo.georgiosafo.com.androiddemo.data.repository.store.UserDataRemoteStore;
@@ -14,8 +16,8 @@ import demo.georgiosafo.com.androiddemo.data.repository.store.UserDataRemoteStor
  */
 
 public class UserRepository implements IDataRepository<ArrayList<UserLocalData>> {
-    private final UserDataLocalStore localStore;
-    private final UserDataRemoteStore remoteStore;
+    private final IDataLocalStore<ArrayList<UserLocalData>> localStore;
+    private final IDataRemoteStore<ArrayList<UserLocalData>> remoteStore;
 
     /**
      * Constructs a {@link UserRepository}.
@@ -23,7 +25,7 @@ public class UserRepository implements IDataRepository<ArrayList<UserLocalData>>
      * @param localStore  {@link UserDataLocalStore}.
      * @param remoteStore {@link UserDataRemoteStore}.
      */
-    public UserRepository(UserDataLocalStore localStore, UserDataRemoteStore remoteStore) {
+    public UserRepository(IDataLocalStore<ArrayList<UserLocalData>> localStore, IDataRemoteStore<ArrayList<UserLocalData>> remoteStore) {
         this.localStore = localStore;
         this.remoteStore = remoteStore;
     }

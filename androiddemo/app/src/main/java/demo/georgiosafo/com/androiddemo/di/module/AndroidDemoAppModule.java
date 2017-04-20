@@ -2,10 +2,16 @@ package demo.georgiosafo.com.androiddemo.di.module;
 
 import android.app.Application;
 
+import java.util.ArrayList;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
+import demo.georgiosafo.com.androiddemo.data.model.local.UserLocalData;
+import demo.georgiosafo.com.androiddemo.data.repository.UserRepository;
+import demo.georgiosafo.com.androiddemo.data.repository.interfaces.IDataLocalStore;
+import demo.georgiosafo.com.androiddemo.data.repository.interfaces.IDataRemoteStore;
 
 /**
  * Created by gevorksafaryan on 19.04.17.
@@ -22,5 +28,11 @@ public class AndroidDemoAppModule {
     @Singleton
     Application provideApplication() {
         return application;
+    }
+
+    @Provides
+    @Singleton
+    UserRepository provideUserRepository(IDataLocalStore<ArrayList<UserLocalData>> localStore, IDataRemoteStore<ArrayList<UserLocalData>> remoteStore) {
+        return new UserRepository(localStore, remoteStore);
     }
 }
