@@ -7,7 +7,7 @@ import demo.georgiosafo.com.androiddemo.AndroidDemoApp;
 import demo.georgiosafo.com.androiddemo.di.component.AndroidDemoAppComponent;
 
 /**
- * Created by gevorksafaryan on 16.05.17.
+ * Created by gevorksafaryan on 22.04.17.
  */
 
 public abstract class BaseActivity extends AppCompatActivity {

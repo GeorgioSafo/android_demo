@@ -10,6 +10,11 @@ import demo.georgiosafo.com.androiddemo.data.model.remote.UserRemoteData;
  */
 
 public class UserWrapper {
+    /**
+     * Wrap server data to local
+     * @param userRemoteDataArrayList collection response
+     * @return
+     */
     public ArrayList<UserLocalData> wrapUserRemoteData(ArrayList<UserRemoteData> userRemoteDataArrayList) {
         ArrayList<UserLocalData> userLocalDataList = new ArrayList<>();
         for (UserRemoteData dataItem : userRemoteDataArrayList) {

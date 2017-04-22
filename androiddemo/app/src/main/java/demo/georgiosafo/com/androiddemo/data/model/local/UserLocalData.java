@@ -1,10 +1,12 @@
 package demo.georgiosafo.com.androiddemo.data.model.local;
 
+import java.io.Serializable;
+
 /**
  * Created by gevorksafaryan on 18.04.17.
  */
 
-public class UserLocalData {
+public class UserLocalData implements Serializable {
     private String localId;
     private String firstName;
     private String lastName;
@@ -12,7 +14,6 @@ public class UserLocalData {
     private String email;
     private int age;
     private String avatarUrl;
-    private String rank;
 
     public String getLocalId() {
         return localId;
@@ -68,14 +69,6 @@ public class UserLocalData {
 
     public void setAvatarUrl(String avatarUrl) {
         this.avatarUrl = avatarUrl;
-    }
-
-    public String getRank() {
-        return rank;
-    }
-
-    public void setRank(String rank) {
-        this.rank = rank;
     }
 
 }

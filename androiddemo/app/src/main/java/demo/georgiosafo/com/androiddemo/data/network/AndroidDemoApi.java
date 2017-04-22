@@ -14,6 +14,6 @@ import retrofit2.http.GET;
 
 public interface AndroidDemoApi {
 
-    @GET("a828a5cca4460512767bf80a321d465c/raw/2a8b85e6b51f78e1463e71af547b352cdd2bc842/gistfile1.txt")
+    @GET("a828a5cca4460512767bf80a321d465c/raw/82a809bf4559e063d3ef5a8a886e821612916d23/gistfile1.txt")
     Call<ArrayList<UserRemoteData>> getUsers();
 }

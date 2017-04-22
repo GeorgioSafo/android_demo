@@ -10,7 +10,7 @@ import demo.georgiosafo.com.androiddemo.data.repository.interfaces.IDataLocalSto
 import demo.georgiosafo.com.androiddemo.data.repository.store.UserDataLocalStore;
 
 /**
- * Created by gevorksafaryan on 16.05.17.
+ * Created by gevorksafaryan on 22.04.17.
  */
 @Module
 public class LocalModule {

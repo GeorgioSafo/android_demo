@@ -33,11 +33,6 @@ public class MainPresenter implements IMainPresenter {
     }
 
     @Override
-    public void onClick(String sender_id) {
-
-    }
-
-    @Override
     public void onDestroy() {
         interactor.unsubscribe();
         mainView = null;
