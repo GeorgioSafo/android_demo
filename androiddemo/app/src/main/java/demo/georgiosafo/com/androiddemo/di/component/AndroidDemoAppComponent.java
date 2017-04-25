@@ -4,6 +4,7 @@ import javax.inject.Singleton;
 
 import dagger.Component;
 import demo.georgiosafo.com.androiddemo.AndroidDemoApp;
+import demo.georgiosafo.com.androiddemo.data.repository.UserNewsRepository;
 import demo.georgiosafo.com.androiddemo.data.repository.UserRepository;
 import demo.georgiosafo.com.androiddemo.di.module.AndroidDemoAppModule;
 import demo.georgiosafo.com.androiddemo.di.module.LocalModule;
@@ -20,5 +21,7 @@ public interface AndroidDemoAppComponent {
     void inject(AndroidDemoApp app);
 
     UserRepository userRepository();
+
+    UserNewsRepository userNewsRepository();
 
 }

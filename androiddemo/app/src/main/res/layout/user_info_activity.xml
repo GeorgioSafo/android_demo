@@ -125,6 +125,7 @@
         android:elevation="8dp"
         app:layout_anchor="@id/backgroundProfile"
         app:layout_anchorGravity="center"
-        app:layout_scrollFlags="scroll" />
+        app:layout_scrollFlags="scroll"
+        android:transitionName="@string/transitionAvatar"/>
 
 </android.support.design.widget.CoordinatorLayout>

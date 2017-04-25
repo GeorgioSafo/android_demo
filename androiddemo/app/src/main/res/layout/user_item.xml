@@ -22,8 +22,7 @@
                 android:layout_width="96dp"
                 android:layout_height="96dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:transitionName="@string/transitionAvatar" />
+                android:layout_marginRight="8dp" />
 
 
             <LinearLayout

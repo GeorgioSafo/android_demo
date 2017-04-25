@@ -1,8 +1,11 @@
 package demo.georgiosafo.com.androiddemo;
 
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -14,20 +17,25 @@ import com.facebook.drawee.backends.pipeline.Fresco;
 import com.facebook.drawee.drawable.ScalingUtils;
 import com.facebook.drawee.generic.GenericDraweeHierarchy;
 import com.facebook.drawee.interfaces.DraweeController;
+import com.facebook.drawee.view.DraweeTransition;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.facebook.imagepipeline.request.ImageRequest;
 import com.facebook.imagepipeline.request.ImageRequestBuilder;
+
+import java.util.ArrayList;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import demo.georgiosafo.com.androiddemo.data.model.local.UserLocalData;
+import demo.georgiosafo.com.androiddemo.data.model.local.UserNewsLocalData;
 import demo.georgiosafo.com.androiddemo.di.component.AndroidDemoAppComponent;
 import demo.georgiosafo.com.androiddemo.di.component.DaggerUserInfoComponent;
 import demo.georgiosafo.com.androiddemo.di.module.UserInfoModule;
 import demo.georgiosafo.com.androiddemo.presentation.BaseActivity;
 import demo.georgiosafo.com.androiddemo.presentation.presenters.interfaces.IUserInfoPresenter;
+import demo.georgiosafo.com.androiddemo.presentation.view.adapters.UserNewsAdapter;
 import demo.georgiosafo.com.androiddemo.presentation.view.interfaces.UserInfoView;
 
 public class UserInfoActivity extends BaseActivity implements UserInfoView, AppBarLayout.OnOffsetChangedListener {
@@ -61,6 +69,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView, AppB
 
     @Bind(R.id.header_text)
     TextView mHeaderText;
+    private UserNewsAdapter userNewsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +77,18 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView, AppB
         setContentView(R.layout.user_info_activity);
         ButterKnife.bind(this);
 
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setSharedElementEnterTransition(DraweeTransition.createTransitionSet(
+                    ScalingUtils.ScaleType.CENTER_CROP, ScalingUtils.ScaleType.CENTER_CROP));
+        }
+
         initializeSimpleDraweeView(mBackgroundProfile);
         initializeSimpleDraweeView(mAvatarProfile);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        initRecylerView();
 
         if (getIntent().getExtras().containsKey(USER)) {
             UserLocalData localData = (UserLocalData) getIntent().getExtras().get(USER);
@@ -84,6 +100,8 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView, AppB
 
         mAppBarLayout.addOnOffsetChangedListener(this);
         mMaxScrollSize = mAppBarLayout.getTotalScrollRange();
+
+        userInfoPresenter.loadUser("");
     }
 
     @Override
@@ -99,6 +117,14 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView, AppB
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void initRecylerView() {
+        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(this);
+        historyList.setLayoutManager(mLayoutManager);
+        historyList.setItemAnimator(new DefaultItemAnimator());
+        userNewsAdapter = new UserNewsAdapter(this, this);
+        historyList.setAdapter(userNewsAdapter);
     }
 
     @Override
@@ -129,6 +155,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView, AppB
     @Override
     public void setAvatar(String Url) {
         setUrl(mAvatarProfile, Url);
+        if (userNewsAdapter != null) {
+            userNewsAdapter.setImageUri(Url);
+        }
     }
 
     @Override
@@ -151,8 +180,14 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView, AppB
     }
 
     @Override
-    public void setHistory() {
+    public void setHistory(ArrayList<UserNewsLocalData> userLocalDatas) {
+        userNewsAdapter.setData(userLocalDatas);
+    }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        supportFinishAfterTransition();
     }
 
     @Override

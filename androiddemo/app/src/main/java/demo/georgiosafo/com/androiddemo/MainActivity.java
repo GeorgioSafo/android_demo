@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity implements MainView {
         bundle.putSerializable(UserInfoActivity.USER, user);
         intent.putExtras(bundle);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, pair.first, pair.second);
+            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this);
             ActivityCompat.startActivity(MainActivity.this, intent, options.toBundle());
         } else {
             startActivity(intent);
