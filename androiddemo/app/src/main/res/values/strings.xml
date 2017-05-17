@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">AndroidDemo</string>
+    <string name="name_format">%1$s %2$s</string>
+    <string name="transitionAvatar">transitionAvatar</string>
+</resources>
