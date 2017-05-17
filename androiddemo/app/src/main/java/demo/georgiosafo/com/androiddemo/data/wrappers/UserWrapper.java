@@ -12,22 +12,39 @@ import demo.georgiosafo.com.androiddemo.data.model.remote.UserRemoteData;
 public class UserWrapper {
     /**
      * Wrap server data to local
+     *
      * @param userRemoteDataArrayList collection response
      * @return
      */
     public ArrayList<UserLocalData> wrapUserRemoteData(ArrayList<UserRemoteData> userRemoteDataArrayList) {
-        ArrayList<UserLocalData> userLocalDataList = new ArrayList<>();
+        ArrayList<UserLocalData> userLocalDataList = new ArrayList<>(10);
         for (UserRemoteData dataItem : userRemoteDataArrayList) {
-            UserLocalData localData = new UserLocalData();
-            localData.setLocalId(dataItem.getServerId());
-            localData.setFirstName(dataItem.getFirstName());
-            localData.setMiddleName(dataItem.getMiddleName());
-            localData.setLastName(dataItem.getLastName());
-            localData.setAge(dataItem.getAge());
-            localData.setAvatarUrl(dataItem.getAvatarUrl());
-            localData.setEmail(dataItem.getEmail());
-            userLocalDataList.add(localData);
+            final UserLocalData userLocalData = wrapUserRemoteData(dataItem);
+            if (userLocalData != null) {
+                userLocalDataList.add(userLocalData);
+            }
         }
         return userLocalDataList;
+    }
+
+    /**
+     * Wrap server data to local
+     *
+     * @param userRemoteData instanse of {@link UserRemoteData}
+     * @return {@link UserLocalData} if valid {@link UserRemoteData} otherwise null
+     */
+    public UserLocalData wrapUserRemoteData(UserRemoteData userRemoteData) {
+        UserLocalData localData = null;
+        if (userRemoteData != null) {
+            localData = new UserLocalData();
+            localData.setLocalId(userRemoteData.getServerId());
+            localData.setFirstName(userRemoteData.getFirstName());
+            localData.setMiddleName(userRemoteData.getMiddleName());
+            localData.setLastName(userRemoteData.getLastName());
+            localData.setAge(userRemoteData.getAge());
+            localData.setAvatarUrl(userRemoteData.getAvatarUrl());
+            localData.setEmail(userRemoteData.getEmail());
+        }
+        return localData;
     }
 }

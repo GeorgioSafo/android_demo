@@ -11,21 +11,37 @@ import demo.georgiosafo.com.androiddemo.data.model.remote.UserNewsRemoteData;
 
 public class UserNewsWrapper {
     /**
-     * Wrap server data to local
+     * Wrap collection of {@link UserNewsRemoteData} to collection of {@link UserNewsLocalData}
      *
-     * @param userRemoteDataArrayList collection response
+     * @param userRemoteDataArrayList collection to be wrapped
      * @return collection of user news
      */
     public ArrayList<UserNewsLocalData> wrapUserRemoteData(ArrayList<UserNewsRemoteData> userRemoteDataArrayList) {
-        ArrayList<UserNewsLocalData> userLocalDataList = new ArrayList<>();
+        final ArrayList<UserNewsLocalData> userLocalDataList = new ArrayList<>();
         for (UserNewsRemoteData dataItem : userRemoteDataArrayList) {
-            UserNewsLocalData localData = new UserNewsLocalData();
-            localData.setLocalId(dataItem.getServerId());
-            localData.setTitle(dataItem.getTitle());
-            localData.setDate(dataItem.getDate());
-            localData.setPost(dataItem.getPost());
-            userLocalDataList.add(localData);
+            final UserNewsLocalData userNewsLocalData = wrapUserRemoteData(dataItem);
+            if (userNewsLocalData != null) {
+                userLocalDataList.add(userNewsLocalData);
+            }
         }
         return userLocalDataList;
+    }
+
+    /**
+     * Wrap server data to local
+     *
+     * @param userNewsRemoteData instanse of {@link UserNewsRemoteData}
+     * @return {@link UserNewsLocalData} if valid {@link UserNewsRemoteData} otherwise null
+     */
+    public UserNewsLocalData wrapUserRemoteData(UserNewsRemoteData userNewsRemoteData) {
+        UserNewsLocalData localData = null;
+        if (userNewsRemoteData != null) {
+            localData = new UserNewsLocalData();
+            localData.setLocalId(userNewsRemoteData.getServerId());
+            localData.setTitle(userNewsRemoteData.getTitle());
+            localData.setDate(userNewsRemoteData.getDate());
+            localData.setPost(userNewsRemoteData.getPost());
+        }
+        return localData;
     }
 }
