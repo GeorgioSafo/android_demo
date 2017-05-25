@@ -1,86 +1,70 @@
 package demo.georgiosafo.com.androiddemo.data.repository;
 
-import java.io.IOException;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
+import java.util.List;
 
 import demo.georgiosafo.com.androiddemo.data.model.local.UserNewsLocalData;
+import demo.georgiosafo.com.androiddemo.data.model.remote.UserNewsRemoteData;
 import demo.georgiosafo.com.androiddemo.data.repository.interfaces.IDataLocalStore;
+import demo.georgiosafo.com.androiddemo.data.repository.interfaces.IDataMemoryStore;
 import demo.georgiosafo.com.androiddemo.data.repository.interfaces.IDataRemoteStore;
 import demo.georgiosafo.com.androiddemo.data.repository.interfaces.IDataRepository;
 import demo.georgiosafo.com.androiddemo.data.repository.store.UserNewsDataLocalStore;
+import demo.georgiosafo.com.androiddemo.data.repository.store.UserNewsDataMemoryStore;
 import demo.georgiosafo.com.androiddemo.data.repository.store.UserNewsDataRemoteStore;
+import demo.georgiosafo.com.androiddemo.data.wrappers.UserNewsWrapper;
+import rx.Observable;
 
 /**
  * Created by gevorksafaryan on 25.04.17.
  */
 
-public class UserNewsRepository implements IDataRepository<ArrayList<UserNewsLocalData>> {
-    private final IDataLocalStore<ArrayList<UserNewsLocalData>> localStore;
-    private final IDataRemoteStore<ArrayList<UserNewsLocalData>> remoteStore;
+public class UserNewsRepository implements IDataRepository<List<UserNewsLocalData>> {
+    private final IDataLocalStore<List<UserNewsLocalData>> localStore;
+    private final IDataMemoryStore<List<UserNewsLocalData>> memoryStore;
+    private final IDataRemoteStore<List<UserNewsRemoteData>> remoteStore;
 
     /**
      * Constructs a {@link UserNewsRepository}.
      *
      * @param localStore  {@link UserNewsDataLocalStore}.
      * @param remoteStore {@link UserNewsDataRemoteStore}.
+     * @param remoteStore {@link UserNewsDataMemoryStore}.
      */
-    public UserNewsRepository(IDataLocalStore<ArrayList<UserNewsLocalData>> localStore, IDataRemoteStore<ArrayList<UserNewsLocalData>> remoteStore) {
+
+
+    public UserNewsRepository(IDataLocalStore<List<UserNewsLocalData>> localStore,
+                              IDataRemoteStore<List<UserNewsRemoteData>> remoteStore,
+                              IDataMemoryStore<List<UserNewsLocalData>> memoryStore) {
         this.localStore = localStore;
+        this.memoryStore = memoryStore;
         this.remoteStore = remoteStore;
     }
 
-
-    /**
-     * @return {@link UserNewsLocalData}
-     */
     @Override
-    public ArrayList<UserNewsLocalData> getData() throws IOException {
-        if (localStore.isExpired()) {
-            ArrayList<UserNewsLocalData> data = remoteStore.getData();
-            localStore.setData(data);
-            return sortData(data);
-        } else {
-            return sortData(localStore.getData());
-        }
+    public Observable<List<UserNewsLocalData>> getNetworkData(HashMap<String, Object> map) {
+        return remoteStore.getDataWithParams(map)
+                .map(userRemoteDataList -> new UserNewsWrapper().wrapUserRemoteData(userRemoteDataList))
+                .doOnNext(userNewsLocalData -> {
+                    if (userNewsLocalData != null && userNewsLocalData.size() > 0) {
+                        memoryStore.setData(userNewsLocalData);
+                        localStore.saveData(userNewsLocalData);
+                    }
+                });
     }
 
-
-    public ArrayList<UserNewsLocalData> sortData(ArrayList<UserNewsLocalData> data) {
-        SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy'T'HH:mm:ss", Locale.getDefault());
-        Collections.sort(data, (o1, o2) -> {
-            Date date1 = null;
-            Date date2 = null;
-            try {
-                date1 = format.parse(o1.getDate());
-                date2 = format.parse(o2.getDate());
-            } catch (ParseException e) {
-                e.printStackTrace();
-                return 0;
-            }
-            return date1.compareTo(date2);
-        });
-        return data;
+    @Override
+    public Observable<List<UserNewsLocalData>> getLocalData(HashMap<String, Object> map) {
+        return localStore.getDataWithParams(map).doOnNext(memoryStore::setData);
     }
 
-    /**
-     * @param map - params for request
-     * @return {@link UserNewsLocalData}
-     */
     @Override
-    public ArrayList<UserNewsLocalData> getDataWithParams(HashMap<String, Object> map) throws
-            IOException {
-        if (localStore.isExpired()) {
-            ArrayList<UserNewsLocalData> data = remoteStore.getDataWithParams(map);
-            localStore.setData(data);
-            return data;
-        } else {
-            return localStore.getData();
-        }
+    public List<UserNewsLocalData> getMemoryData(HashMap<String, Object> map) {
+        return memoryStore.getDatawithParams(map);
+    }
+
+    @Override
+    public boolean isCached() {
+        return memoryStore.isCached();
     }
 }

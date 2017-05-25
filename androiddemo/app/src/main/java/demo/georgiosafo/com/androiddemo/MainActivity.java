@@ -1,7 +1,6 @@
 package demo.georgiosafo.com.androiddemo;
 
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -16,7 +15,8 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import javax.inject.Inject;
 
@@ -100,7 +100,7 @@ public class MainActivity extends BaseActivity implements MainView {
     }
 
     @Override
-    public void showUsers(ArrayList<UserLocalData> userLocalDatas) {
+    public void showUsers(List<UserLocalData> userLocalDatas) {
         userAdapter.setData(userLocalDatas);
     }
 
@@ -112,16 +112,15 @@ public class MainActivity extends BaseActivity implements MainView {
      * @param user Object of User
      */
     @Override
-    public void startTransition(@NonNull Pair<View, String> pair, UserLocalData user) {
+    public void startTransition(@NonNull Pair<View, String>[] pair, UserLocalData user) {
         Intent intent = new Intent(this, UserInfoActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putSerializable(UserInfoActivity.USER, user);
+        bundle.putString(UserInfoActivity.USER_ID, user.getLocalId());
+        bundle.putString(UserInfoActivity.USER_TITLE, String.format(Locale.getDefault(), AndroidDemoApp.getAndroidDemoApp().getResources().getString(R.string.name_format), user.getFirstName(), user.getLastName()));
+        bundle.putString(UserInfoActivity.USER_AVATAR_URL, user.getAvatarUrl());
         intent.putExtras(bundle);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this);
-            ActivityCompat.startActivity(MainActivity.this, intent, options.toBundle());
-        } else {
-            startActivity(intent);
-        }
+        ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(MainActivity.this, pair);
+        ActivityCompat.startActivity(this, intent, options.toBundle());
+
     }
 }

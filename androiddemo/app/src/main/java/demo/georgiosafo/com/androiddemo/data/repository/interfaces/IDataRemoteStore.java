@@ -1,16 +1,13 @@
 package demo.georgiosafo.com.androiddemo.data.repository.interfaces;
 
-import java.io.IOException;
 import java.util.HashMap;
+
+import rx.Observable;
 
 /**
  * Created by gevorksafaryan on 18.04.17.
  */
 
 public interface IDataRemoteStore<T> {
-
-    T getData() throws IOException;
-
-    T getDataWithParams(HashMap<String, Object> map) throws IOException;
-
+    Observable<T> getDataWithParams(HashMap<String, Object> map);
 }

@@ -1,21 +1,18 @@
 package demo.georgiosafo.com.androiddemo.data.repository.store;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-import demo.georgiosafo.com.androiddemo.data.model.local.UserLocalData;
 import demo.georgiosafo.com.androiddemo.data.model.remote.UserRemoteData;
 import demo.georgiosafo.com.androiddemo.data.network.AndroidDemoApi;
 import demo.georgiosafo.com.androiddemo.data.repository.interfaces.IDataRemoteStore;
-import demo.georgiosafo.com.androiddemo.data.wrappers.UserWrapper;
-import rx.exceptions.OnErrorNotImplementedException;
+import rx.Observable;
 
 /**
  * Created by gevorksafaryan on 19.04.17.
  */
 
-public class UserDataRemoteStore implements IDataRemoteStore<ArrayList<UserLocalData>> {
+public class UserDataRemoteStore implements IDataRemoteStore<List<UserRemoteData>> {
 
 
     private final AndroidDemoApi api;
@@ -25,14 +22,7 @@ public class UserDataRemoteStore implements IDataRemoteStore<ArrayList<UserLocal
     }
 
     @Override
-    public ArrayList<UserLocalData> getData() throws IOException {
-        ArrayList<UserRemoteData> remoteDataArrayList = api.getUsers().execute().body();
-        return new UserWrapper().wrapUserRemoteData(remoteDataArrayList);
-    }
-
-    @Override
-    public ArrayList<UserLocalData> getDataWithParams(HashMap<String, Object> map) throws IOException {
-        //add params
-        throw new OnErrorNotImplementedException(new Throwable());
+    public Observable<List<UserRemoteData>> getDataWithParams(HashMap<String, Object> map) {
+        return api.getUsers();
     }
 }

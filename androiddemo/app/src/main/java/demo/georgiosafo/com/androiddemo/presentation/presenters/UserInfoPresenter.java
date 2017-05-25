@@ -1,6 +1,6 @@
 package demo.georgiosafo.com.androiddemo.presentation.presenters;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import demo.georgiosafo.com.androiddemo.AndroidDemoApp;
@@ -38,12 +38,12 @@ public class UserInfoPresenter implements IUserInfoPresenter {
 
     @Override
     public void onPause() {
-
+        subscriber.unsubscribe();
     }
 
     @Override
     public void loadUser(String userId) {
-        interactor.requestUserNewsList(subscriber);
+        interactor.getUserNewsList(subscriber);
     }
 
     @Override
@@ -61,7 +61,7 @@ public class UserInfoPresenter implements IUserInfoPresenter {
         view.setHeaderText(sb.toString());
     }
 
-    private Subscriber<ArrayList<UserNewsLocalData>> subscriber = new Subscriber<ArrayList<UserNewsLocalData>>() {
+    private Subscriber<List<UserNewsLocalData>> subscriber = new Subscriber<List<UserNewsLocalData>>() {
         @Override
         public void onStart() {
             view.showProgress();
@@ -80,7 +80,7 @@ public class UserInfoPresenter implements IUserInfoPresenter {
         }
 
         @Override
-        public void onNext(ArrayList<UserNewsLocalData> userLocalDatas) {
+        public void onNext(List<UserNewsLocalData> userLocalDatas) {
             view.hideProgress();
             view.setHistory(userLocalDatas);
         }

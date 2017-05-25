@@ -1,6 +1,7 @@
 package demo.georgiosafo.com.androiddemo.data.wrappers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import demo.georgiosafo.com.androiddemo.data.model.local.UserNewsLocalData;
 import demo.georgiosafo.com.androiddemo.data.model.remote.UserNewsRemoteData;
@@ -13,12 +14,12 @@ public class UserNewsWrapper {
     /**
      * Wrap collection of {@link UserNewsRemoteData} to collection of {@link UserNewsLocalData}
      *
-     * @param userRemoteDataArrayList collection to be wrapped
+     * @param userRemoteDataList collection to be wrapped
      * @return collection of user news
      */
-    public ArrayList<UserNewsLocalData> wrapUserRemoteData(ArrayList<UserNewsRemoteData> userRemoteDataArrayList) {
-        final ArrayList<UserNewsLocalData> userLocalDataList = new ArrayList<>();
-        for (UserNewsRemoteData dataItem : userRemoteDataArrayList) {
+    public List<UserNewsLocalData> wrapUserRemoteData(List<UserNewsRemoteData> userRemoteDataList) {
+        final List<UserNewsLocalData> userLocalDataList = new ArrayList<>();
+        for (UserNewsRemoteData dataItem : userRemoteDataList) {
             final UserNewsLocalData userNewsLocalData = wrapUserRemoteData(dataItem);
             if (userNewsLocalData != null) {
                 userLocalDataList.add(userNewsLocalData);

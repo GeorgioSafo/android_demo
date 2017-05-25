@@ -1,34 +1,35 @@
 package demo.georgiosafo.com.androiddemo;
 
-import android.net.Uri;
+import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.transition.Slide;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.facebook.drawee.backends.pipeline.Fresco;
-import com.facebook.drawee.drawable.ScalingUtils;
-import com.facebook.drawee.generic.GenericDraweeHierarchy;
-import com.facebook.drawee.interfaces.DraweeController;
-import com.facebook.drawee.view.DraweeTransition;
-import com.facebook.drawee.view.SimpleDraweeView;
-import com.facebook.imagepipeline.request.ImageRequest;
-import com.facebook.imagepipeline.request.ImageRequestBuilder;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import demo.georgiosafo.com.androiddemo.data.model.local.UserLocalData;
 import demo.georgiosafo.com.androiddemo.data.model.local.UserNewsLocalData;
 import demo.georgiosafo.com.androiddemo.di.component.AndroidDemoAppComponent;
 import demo.georgiosafo.com.androiddemo.di.component.DaggerUserInfoComponent;
@@ -40,8 +41,10 @@ import demo.georgiosafo.com.androiddemo.presentation.view.interfaces.UserInfoVie
 
 public class UserInfoActivity extends BaseActivity implements UserInfoView, AppBarLayout.OnOffsetChangedListener {
 
-    public static final String USER = "user";
+    public static final String USER_ID = "user_id";
+    public static final String USER_TITLE = "user_title";
     private static final int PERCENTAGE_TO_ANIMATE_AVATAR = 20;
+    public static final String USER_AVATAR_URL = "user_avatar_url";
     private boolean mIsAvatarShown = true;
 
     private int mMaxScrollSize;
@@ -52,6 +55,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView, AppB
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
+    @Bind(R.id.collapsing)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
     @Bind(R.id.history_list)
     RecyclerView historyList;
 
@@ -59,10 +65,13 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView, AppB
     ProgressBar mProgressBar;
 
     @Bind(R.id.backgroundProfile)
-    SimpleDraweeView mBackgroundProfile;
+    ImageView mBackgroundProfile;
+
+    @Bind(R.id.transparent_view)
+    View mTransparentView;
 
     @Bind(R.id.avatar_imageView)
-    SimpleDraweeView mAvatarProfile;
+    ImageView mAvatarProfile;
 
     @Bind(R.id.appbar)
     AppBarLayout mAppBarLayout;
@@ -76,32 +85,54 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView, AppB
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_info_activity);
         ButterKnife.bind(this);
-
+        collapsingToolbarLayout.getLayoutParams().height = Resources.getSystem().getDisplayMetrics().widthPixels;
+        // Postpone the transition until the detail image thumbnail is loaded
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().setSharedElementEnterTransition(DraweeTransition.createTransitionSet(
-                    ScalingUtils.ScaleType.CENTER_CROP, ScalingUtils.ScaleType.CENTER_CROP));
+            Slide slide = new Slide(Gravity.BOTTOM);
+            slide.excludeTarget(mAppBarLayout, true);
+            slide.excludeTarget(android.R.id.statusBarBackground, true);
+            slide.excludeTarget(android.R.id.navigationBarBackground, true);
+            slide.excludeTarget(mAvatarProfile, true);
+            getWindow().setEnterTransition(slide);
+            getWindow().setAllowEnterTransitionOverlap(true);
+            supportPostponeEnterTransition();
         }
 
-        initializeSimpleDraweeView(mBackgroundProfile);
-        initializeSimpleDraweeView(mAvatarProfile);
 
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initRecylerView();
 
-        if (getIntent().getExtras().containsKey(USER)) {
-            UserLocalData localData = (UserLocalData) getIntent().getExtras().get(USER);
-            userInfoPresenter.completeFields(localData);
-        }
+        parseIntent(getIntent());
 
-
-        mToolbar.setNavigationOnClickListener(v -> onBackPressed());
+        animateEnter();
 
         mAppBarLayout.addOnOffsetChangedListener(this);
         mMaxScrollSize = mAppBarLayout.getTotalScrollRange();
+    }
 
-        userInfoPresenter.loadUser("");
+    private void animateEnter() {
+        mTransparentView.setAlpha(0.0f);
+        mTransparentView.animate().alpha(1.0f).setDuration(1000);
+        mAvatarProfile.setScaleX(0);
+        mAvatarProfile.setScaleY(0);
+        mAvatarProfile.animate()
+                .scaleY(1).scaleX(1).setDuration(500);
+    }
+
+
+    private void parseIntent(Intent intent) {
+        if (intent.getExtras().containsKey(USER_ID)) {
+            userInfoPresenter.loadUser(getIntent().getExtras().getString(USER_ID));
+        }
+        if (intent.getExtras().containsKey(USER_TITLE)) {
+            setTitle(getIntent().getExtras().getString(USER_TITLE));
+        }
+        if (intent.getExtras().containsKey(USER_AVATAR_URL)) {
+            setAvatar(getIntent().getExtras().getString(USER_AVATAR_URL));
+            setBackground(getIntent().getExtras().getString(USER_AVATAR_URL));
+        }
     }
 
     @Override
@@ -165,22 +196,33 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView, AppB
         setUrl(mBackgroundProfile, Url);
     }
 
-    private void setUrl(SimpleDraweeView view, String url) {
-        ImageRequest requestBuilder = ImageRequestBuilder.newBuilderWithSource(Uri.parse(url))
-                .setProgressiveRenderingEnabled(true)
-                .build();
-        DraweeController contoller = Fresco.newDraweeControllerBuilder().setImageRequest(requestBuilder).build();
-        view.setController(contoller);
-    }
+    private void setUrl(ImageView view, String url) {
+        Glide.with(this)
+                .load(url)
+                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                .crossFade()
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        if (view.getId() == mBackgroundProfile.getId()) {
+                            supportStartPostponedEnterTransition();
+                        }
+                        return false;
+                    }
 
-    private void initializeSimpleDraweeView(SimpleDraweeView simpleDraweeView) {
-        GenericDraweeHierarchy hierarchy = simpleDraweeView.getHierarchy();
-        hierarchy.setPlaceholderImage(R.drawable.ic_profile, ScalingUtils.ScaleType.CENTER_INSIDE);
-        hierarchy.setActualImageScaleType(ScalingUtils.ScaleType.CENTER_CROP);
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        if (view.getId() == mBackgroundProfile.getId()) {
+                            supportStartPostponedEnterTransition();
+                        }
+                        return false;
+                    }
+                })
+                .into(view);
     }
 
     @Override
-    public void setHistory(ArrayList<UserNewsLocalData> userLocalDatas) {
+    public void setHistory(List<UserNewsLocalData> userLocalDatas) {
         userNewsAdapter.setData(userLocalDatas);
     }
 
@@ -214,6 +256,11 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView, AppB
                     .scaleY(1).scaleX(1)
                     .start();
         }
+    }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        userInfoPresenter.onPause();
     }
 }

@@ -3,7 +3,7 @@ package demo.georgiosafo.com.androiddemo.presentation.view.interfaces;
 import android.support.v4.util.Pair;
 import android.view.View;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import demo.georgiosafo.com.androiddemo.data.model.local.UserLocalData;
 
@@ -12,7 +12,7 @@ import demo.georgiosafo.com.androiddemo.data.model.local.UserLocalData;
  */
 
 public interface MainView extends BaseView {
-    void showUsers(ArrayList<UserLocalData> userLocalDatas);
+    void showUsers(List<UserLocalData> userLocalDatas);
 
-    void startTransition(Pair<View, String> pair, UserLocalData user);
+    void startTransition(Pair<View, String>[] pair, UserLocalData user);
 }

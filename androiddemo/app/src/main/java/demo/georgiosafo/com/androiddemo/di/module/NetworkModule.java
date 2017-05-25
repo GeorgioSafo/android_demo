@@ -1,13 +1,13 @@
 package demo.georgiosafo.com.androiddemo.di.module;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;
-import demo.georgiosafo.com.androiddemo.data.model.local.UserLocalData;
-import demo.georgiosafo.com.androiddemo.data.model.local.UserNewsLocalData;
+import demo.georgiosafo.com.androiddemo.data.model.remote.UserNewsRemoteData;
+import demo.georgiosafo.com.androiddemo.data.model.remote.UserRemoteData;
 import demo.georgiosafo.com.androiddemo.data.network.AndroidDemoApi;
 import demo.georgiosafo.com.androiddemo.data.repository.interfaces.IDataRemoteStore;
 import demo.georgiosafo.com.androiddemo.data.repository.store.UserDataRemoteStore;
@@ -50,12 +50,12 @@ public class NetworkModule {
     }
 
     @Provides
-    IDataRemoteStore<ArrayList<UserLocalData>> provideRemoteStore(AndroidDemoApi api) {
+    IDataRemoteStore<List<UserRemoteData>> provideRemoteStore(AndroidDemoApi api) {
         return new UserDataRemoteStore(api);
     }
 
     @Provides
-    IDataRemoteStore<ArrayList<UserNewsLocalData>> proviewUserNewsRemoteStore(AndroidDemoApi api) {
+    IDataRemoteStore<List<UserNewsRemoteData>> proviewUserNewsRemoteStore(AndroidDemoApi api) {
         return new UserNewsDataRemoteStore(api);
     }
 

@@ -14,6 +14,5 @@ import demo.georgiosafo.com.androiddemo.presentation.presenters.interfaces.IUser
 @Component(dependencies = AndroidDemoAppComponent.class, modules = UserInfoModule.class)
 public interface UserInfoComponent {
     void inject(UserInfoActivity userInfoActivity);
-
     IUserInfoPresenter userInfoPresenter();
 }

@@ -1,31 +1,33 @@
 package demo.georgiosafo.com.androiddemo.data.repository.store;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
+import demo.georgiosafo.com.androiddemo.data.database.IRealmService;
 import demo.georgiosafo.com.androiddemo.data.model.local.UserNewsLocalData;
 import demo.georgiosafo.com.androiddemo.data.repository.interfaces.IDataLocalStore;
+import rx.Observable;
 
 /**
  * Created by gevorksafaryan on 25.04.17.
  */
 
-public class UserNewsDataLocalStore implements IDataLocalStore<ArrayList<UserNewsLocalData>> {
+public class UserNewsDataLocalStore implements IDataLocalStore<List<UserNewsLocalData>> {
 
-    ArrayList<UserNewsLocalData> data = null;
+    private final IRealmService realmService;
 
-    @Override
-    public ArrayList<UserNewsLocalData> getData() {
-        return data;
+    public UserNewsDataLocalStore(IRealmService realmService) {
+        this.realmService = realmService;
     }
 
     @Override
-    public void setData(ArrayList<UserNewsLocalData> data) {
-        this.data = data;
+    public Observable<List<UserNewsLocalData>> getDataWithParams(HashMap<String, Object> map) {
+        return realmService.getNews();
     }
 
     @Override
-    public boolean isExpired() {
-        return data == null || data.size() == 0;
+    public void saveData(List<UserNewsLocalData> data) {
+
     }
 }
 

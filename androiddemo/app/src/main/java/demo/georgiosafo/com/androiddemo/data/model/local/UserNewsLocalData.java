@@ -1,10 +1,14 @@
 package demo.georgiosafo.com.androiddemo.data.model.local;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by gevorksafaryan on 25.04.17.
  */
 
-public class UserNewsLocalData {
+public class UserNewsLocalData extends RealmObject {
+    @PrimaryKey
     private String localId;
     private String title;
     private String date;

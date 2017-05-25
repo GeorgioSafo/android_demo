@@ -1,6 +1,6 @@
 package demo.georgiosafo.com.androiddemo.presentation.presenters;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import demo.georgiosafo.com.androiddemo.data.model.local.UserLocalData;
 import demo.georgiosafo.com.androiddemo.domain.interactor.interfaces.IUserInteractor;
@@ -24,7 +24,7 @@ public class MainPresenter implements IMainPresenter {
 
     @Override
     public void loadUsers() {
-        interactor.requestUserList(subscriber);
+        interactor.getUserList(subscriber);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class MainPresenter implements IMainPresenter {
 
     }
 
-    private Subscriber<ArrayList<UserLocalData>> subscriber = new Subscriber<ArrayList<UserLocalData>>() {
+    private Subscriber<List<UserLocalData>> subscriber = new Subscriber<List<UserLocalData>>() {
         @Override
         public void onStart() {
             mainView.showProgress();
@@ -67,7 +67,7 @@ public class MainPresenter implements IMainPresenter {
         }
 
         @Override
-        public void onNext(ArrayList<UserLocalData> userLocalDatas) {
+        public void onNext(List<UserLocalData> userLocalDatas) {
             mainView.hideProgress();
             mainView.showUsers(userLocalDatas);
         }

@@ -1,17 +1,18 @@
 package demo.georgiosafo.com.androiddemo.data.repository.store;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import demo.georgiosafo.com.androiddemo.data.network.AndroidDemoApi;
+import java.util.List;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.verify;
+import demo.georgiosafo.com.androiddemo.data.model.remote.UserRemoteData;
+import demo.georgiosafo.com.androiddemo.data.network.AndroidDemoApi;
+import demo.georgiosafo.com.androiddemo.data.network.MockAndroidDemoApi;
+import rx.Subscription;
+import rx.observers.TestSubscriber;
 
 /**
  * Created by gevorksafaryan on 17.05.17.
@@ -21,25 +22,31 @@ public class UserDataRemoteStoreTest {
 
     private UserDataRemoteStore userDataRemoteStore;
 
-    @Mock
     private AndroidDemoApi mockAndroidDemoApi;
 
     @Before
     public void setUp() {
+        mockAndroidDemoApi = new MockAndroidDemoApi();
         userDataRemoteStore = new UserDataRemoteStore(mockAndroidDemoApi);
     }
 
     @Test
     public void testGetUserEntityListFromApi() {
+        //arrange
+        TestSubscriber<List<UserRemoteData>> testSubscriber = new TestSubscriber<List<UserRemoteData>>();
 
         //act
-        try {
-            userDataRemoteStore.getData();
-        } catch (Exception e) {
-            assertThat(e, is(instanceOf(NullPointerException.class)));
-        }
+        Subscription subscription = userDataRemoteStore.getDataWithParams(null).subscribe(testSubscriber);
 
         //assert
-        verify(mockAndroidDemoApi).getUsers();
+        testSubscriber.assertNoErrors();
+        testSubscriber.assertValueCount(1);
+        testSubscriber.assertCompleted();
+    }
+
+    @After
+    public void cleanUp() {
+        mockAndroidDemoApi = null;
+        userDataRemoteStore = null;
     }
 }

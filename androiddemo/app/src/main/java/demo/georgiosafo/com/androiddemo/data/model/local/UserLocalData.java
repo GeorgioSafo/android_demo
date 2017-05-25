@@ -2,12 +2,17 @@ package demo.georgiosafo.com.androiddemo.data.model.local;
 
 import java.io.Serializable;
 
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
 /**
  * Created by gevorksafaryan on 18.04.17.
  */
 
-public class UserLocalData implements Serializable {
+public class UserLocalData extends RealmObject implements Serializable {
+    @PrimaryKey
     private String localId;
+
     private String firstName;
     private String lastName;
     private String middleName;

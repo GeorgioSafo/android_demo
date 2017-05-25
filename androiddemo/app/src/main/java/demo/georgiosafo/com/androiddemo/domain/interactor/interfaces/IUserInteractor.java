@@ -1,6 +1,6 @@
 package demo.georgiosafo.com.androiddemo.domain.interactor.interfaces;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import demo.georgiosafo.com.androiddemo.data.model.local.UserLocalData;
 import rx.Subscriber;
@@ -9,6 +9,6 @@ import rx.Subscriber;
  * Created by gevorksafaryan on 18.04.17.
  */
 
-public interface IUserInteractor extends IBaseInteractor{
-    void requestUserList(Subscriber<ArrayList<UserLocalData>> subscriber);
+public interface IUserInteractor extends IBaseInteractor {
+    void getUserList(Subscriber<List<UserLocalData>> subscriber);
 }

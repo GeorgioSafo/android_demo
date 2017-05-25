@@ -7,6 +7,7 @@ import demo.georgiosafo.com.androiddemo.AndroidDemoApp;
 import demo.georgiosafo.com.androiddemo.data.repository.UserNewsRepository;
 import demo.georgiosafo.com.androiddemo.data.repository.UserRepository;
 import demo.georgiosafo.com.androiddemo.di.module.AndroidDemoAppModule;
+import demo.georgiosafo.com.androiddemo.di.module.CacheModule;
 import demo.georgiosafo.com.androiddemo.di.module.LocalModule;
 import demo.georgiosafo.com.androiddemo.di.module.NetworkModule;
 
@@ -15,7 +16,7 @@ import demo.georgiosafo.com.androiddemo.di.module.NetworkModule;
  */
 @Singleton
 @Component(
-        modules = {AndroidDemoAppModule.class, NetworkModule.class, LocalModule.class}
+        modules = {AndroidDemoAppModule.class, NetworkModule.class, LocalModule.class, CacheModule.class}
 )
 public interface AndroidDemoAppComponent {
     void inject(AndroidDemoApp app);

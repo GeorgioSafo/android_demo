@@ -1,7 +1,8 @@
 package demo.georgiosafo.com.androiddemo.data.repository.interfaces;
 
-import java.io.IOException;
 import java.util.HashMap;
+
+import rx.Observable;
 
 /**
  * Created by gevorksafaryan on 18.04.17.
@@ -9,8 +10,11 @@ import java.util.HashMap;
 
 public interface IDataRepository<T> {
 
-    T getData() throws IOException;
+    Observable<T> getNetworkData(HashMap<String, Object> map);
 
-    T getDataWithParams(HashMap<String, Object> map) throws IOException;
+    Observable<T> getLocalData(HashMap<String, Object> map);
 
+    T getMemoryData(HashMap<String, Object> map);
+
+    boolean isCached();
 }

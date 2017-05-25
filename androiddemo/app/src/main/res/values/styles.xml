@@ -10,5 +10,5 @@
         <item name="colorControlNormal">@color/icons</item>
     </style>
 
-    <style name="AppTheme" parent="BaseAppTheme"></style>
+    <style name="AppTheme" parent="BaseAppTheme"/>
 </resources>

@@ -1,6 +1,6 @@
 package demo.georgiosafo.com.androiddemo.domain.interactor.interfaces;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import demo.georgiosafo.com.androiddemo.data.model.local.UserNewsLocalData;
 import rx.Subscriber;
@@ -10,5 +10,5 @@ import rx.Subscriber;
  */
 
 public interface IUserNewsInteractor extends IBaseInteractor {
-    void requestUserNewsList(Subscriber<ArrayList<UserNewsLocalData>> subscriber);
+    void getUserNewsList(Subscriber<List<UserNewsLocalData>> subscriber);
 }

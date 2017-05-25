@@ -1,6 +1,7 @@
 package demo.georgiosafo.com.androiddemo.data.wrappers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import demo.georgiosafo.com.androiddemo.data.model.local.UserLocalData;
 import demo.georgiosafo.com.androiddemo.data.model.remote.UserRemoteData;
@@ -16,7 +17,7 @@ public class UserWrapper {
      * @param userRemoteDataArrayList collection response
      * @return
      */
-    public ArrayList<UserLocalData> wrapUserRemoteData(ArrayList<UserRemoteData> userRemoteDataArrayList) {
+    public List<UserLocalData> wrapUserRemoteData(List<UserRemoteData> userRemoteDataArrayList) {
         ArrayList<UserLocalData> userLocalDataList = new ArrayList<>(10);
         for (UserRemoteData dataItem : userRemoteDataArrayList) {
             final UserLocalData userLocalData = wrapUserRemoteData(dataItem);

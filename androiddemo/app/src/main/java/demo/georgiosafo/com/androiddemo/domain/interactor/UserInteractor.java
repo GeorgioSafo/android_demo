@@ -1,17 +1,14 @@
 package demo.georgiosafo.com.androiddemo.domain.interactor;
 
-import java.io.IOException;
-import java.util.ArrayList;
+import java.util.List;
 
 import demo.georgiosafo.com.androiddemo.data.model.local.UserLocalData;
 import demo.georgiosafo.com.androiddemo.data.repository.UserRepository;
 import demo.georgiosafo.com.androiddemo.domain.interactor.interfaces.IUserInteractor;
-import rx.Observable;
 import rx.Subscriber;
-import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.internal.util.SubscriptionList;
 import rx.schedulers.Schedulers;
-import rx.subscriptions.Subscriptions;
 
 /**
  * Created by gevorksafaryan on 19.04.17.
@@ -19,7 +16,7 @@ import rx.subscriptions.Subscriptions;
 
 public class UserInteractor implements IUserInteractor {
 
-    private Subscription subscription = Subscriptions.empty();
+    private SubscriptionList subscription = new SubscriptionList();
     private UserRepository userRepository;
 
 
@@ -33,18 +30,18 @@ public class UserInteractor implements IUserInteractor {
     }
 
     @Override
-    public void requestUserList(Subscriber<ArrayList<UserLocalData>> subscriber) {
-        subscription = Observable.just(userRepository).map(repository -> {
-            try {
-                return repository.getData();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
-        })
-                .subscribeOn(Schedulers.newThread())
-                //// TODO: 19.04.17 Change to PostExecutionThread
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(subscriber);
+    public void getUserList(Subscriber<List<UserLocalData>> subscriber) {
+        if (userRepository.isCached()) {
+            subscriber.onNext(userRepository.getMemoryData(null));
+        } else {
+            subscription.add(userRepository
+                    .getLocalData(null)
+                    .subscribe(subscriber));
+            subscription.add(userRepository
+                    .getNetworkData(null)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(subscriber));
+        }
     }
 }
