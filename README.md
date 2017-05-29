@@ -1,2 +1,2 @@
-# android_demo
-This is a demo of android project.
+# social_network_example
+This is a demo of social network project.
