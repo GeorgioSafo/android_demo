@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">Social Network Example</string>
+    <string name="name_format">%1$s %2$s</string>
+    <string name="transitionAvatar">transitionAvatar</string>
+    <string name="transitionTitle">transitionTitle</string>
+    <string name="date_format_mask">dd-MM-yyyy\'T\'HH:mm:ss</string>
+    <string name="here_is_comment">Here is comment...</string>
+
+    <string-array name="months">
+        <item>January</item>
+        <item>February</item>
+        <item>March</item>
+        <item>April</item>
+        <item>May</item>
+        <item>June</item>
+        <item>July</item>
+        <item>August</item>
+        <item>September</item>
+        <item>October</item>
+        <item>November</item>
+        <item>December</item>
+    </string-array>
+</resources>
