@@ -44,7 +44,7 @@ public class UserNewsDataLocalStore implements IDataLocalStore<List<UserNewsLoca
 
     @Override
     public void saveData(List<UserNewsLocalData> data) {
-
+        realmService.updateUserNewsData(data);
     }
 }
 

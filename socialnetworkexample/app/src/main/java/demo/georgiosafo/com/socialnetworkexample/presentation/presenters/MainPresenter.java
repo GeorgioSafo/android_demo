@@ -41,6 +41,7 @@ public class MainPresenter implements IMainPresenter {
 
     @Override
     public void loadUsers() {
+        mainView.showProgress();
         interactor.getUserList(subscriber);
     }
 

@@ -17,15 +17,11 @@
  */
 package demo.georgiosafo.com.socialnetworkexample.data.database;
 
-import android.os.Handler;
-import android.os.Looper;
-
 import java.util.List;
 
 import demo.georgiosafo.com.socialnetworkexample.data.model.local.UserLocalData;
 import demo.georgiosafo.com.socialnetworkexample.data.model.local.UserNewsLocalData;
 import io.realm.Realm;
-import io.realm.RealmResults;
 import rx.Observable;
 
 /**
@@ -33,7 +29,7 @@ import rx.Observable;
  */
 
 public class RealmService implements IRealmService {
-    private final Realm realm;
+    private volatile Realm realm;
 
     public RealmService(final Realm realm) {
         this.realm = realm;
@@ -41,22 +37,20 @@ public class RealmService implements IRealmService {
 
     @Override
     public Observable<List<UserLocalData>> getAllUserLocalData() {
-        return realm.allObjects(UserLocalData.class).asObservable().map(userLocalData -> {
-            RealmResults<UserLocalData> localData = realm.allObjects(UserLocalData.class);
-            return localData.subList(0, localData.size());
-        });
+        realm = Realm.getDefaultInstance();
+        return realm.allObjects(UserLocalData.class).asObservable().map(userLocalData ->
+                userLocalData.subList(0, userLocalData.size())
+        );
 
     }
 
     @Override
     public void updateUserLocalData(final List<UserLocalData> data) {
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(() -> {
-                    realm.beginTransaction();
-                    realm.copyToRealmOrUpdate(data);
-                    realm.commitTransaction();
-                }
-        );
+        realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(data);
+        realm.commitTransaction();
+
     }
 
     @Override
@@ -67,20 +61,17 @@ public class RealmService implements IRealmService {
 
     @Override
     public Observable<List<UserNewsLocalData>> getNews() {
-        return realm.allObjects(UserNewsLocalData.class).asObservable().map(userLocalData -> {
-            RealmResults<UserNewsLocalData> localData = realm.allObjects(UserNewsLocalData.class);
-            return localData.subList(0, localData.size());
-        });
+        realm = Realm.getDefaultInstance();
+        return realm.allObjects(UserNewsLocalData.class).asObservable().map(userLocalData ->
+                userLocalData.subList(0, userLocalData.size())
+        );
     }
 
     @Override
     public void updateUserNewsData(List<UserNewsLocalData> data) {
-        Handler handler = new Handler(Looper.getMainLooper());
-        handler.post(() -> {
-                    realm.beginTransaction();
-                    realm.copyToRealmOrUpdate(data);
-                    realm.commitTransaction();
-                }
-        );
+        realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        realm.copyToRealmOrUpdate(data);
+        realm.commitTransaction();
     }
 }

@@ -1,3 +1,10 @@
-<component name="CopyrightManager">
-  <settings default="" />
+<component name="CopyrightManager" default="MIT License">
+    <copyright>
+        <option name="notice"
+            value="Copyright (c) 2017 Gevork Safaryan&#10;&#10;Permission is hereby granted, free of charge, to any person obtaining a copy of this software&#10;and associated documentation files (the &quot;Software&quot;), to deal in the Software without restriction,&#10;including without limitation the rights to use, copy, modify, merge, publish, distribute,&#10;sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is&#10;furnished to do so, subject to the following conditions:&#10;The above copyright notice and this permission notice shall be included in all copies&#10;or substantial portions of the Software.&#10;&#10;THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,&#10;INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE&#10;AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,&#10;DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,&#10;OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&#10;" />
+        <option name="keyword" value="Copyright" />
+        <option name="allowReplaceKeyword" value="" />
+        <option name="myName" value="MIT License" />
+        <option name="myLocal" value="true" />
+    </copyright>
 </component>

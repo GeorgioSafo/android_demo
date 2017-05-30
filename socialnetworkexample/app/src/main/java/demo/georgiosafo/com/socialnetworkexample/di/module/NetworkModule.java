@@ -43,6 +43,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NetworkModule {
 
     public static final String BASE_URL = "https://gist.githubusercontent.com/GeorgioSafo/";
+    public static final String BASE_API = "a828a5cca4460512767bf80a321d465c/raw/09eba78773075fc29dfe98db8bbf8a5fd02e8667/";
 
 
     @Provides
@@ -55,7 +56,7 @@ public class NetworkModule {
                 .client(client)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .baseUrl(BASE_URL)
+                .baseUrl(BASE_URL + BASE_API)
                 .build();
     }
 

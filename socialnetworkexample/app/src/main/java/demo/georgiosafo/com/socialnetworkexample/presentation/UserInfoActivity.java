@@ -59,7 +59,7 @@ import demo.georgiosafo.com.socialnetworkexample.presentation.presenters.interfa
 import demo.georgiosafo.com.socialnetworkexample.presentation.view.adapters.UserNewsAdapter;
 import demo.georgiosafo.com.socialnetworkexample.presentation.view.interfaces.UserInfoView;
 
-public class UserInfoActivity extends BaseActivity implements UserInfoView, AppBarLayout.OnOffsetChangedListener {
+public class UserInfoActivity extends BaseActivity implements UserInfoView{
 
     public static final String USER_ID = "user_id";
     public static final String USER_TITLE = "user_title";
@@ -128,14 +128,14 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView, AppB
             Fade fade = new Fade();
             fade.excludeTarget(nestedScrollView, true);
             fade.excludeTarget(floatingActionButton, true);
-            fade.excludeTarget(mBackgroundProfile, true);
+            fade.excludeTarget(mAvatarProfile, true);
             fade.excludeTarget(mHeaderText, true);
 
             TransitionSet set = new TransitionSet();
             set.addTransition(slider);
             set.addTransition(fade);
             getWindow().setEnterTransition(set);
-            getWindow().setSharedElementsUseOverlay(false);
+            getWindow().setSharedElementsUseOverlay(true);
             getWindow().setAllowEnterTransitionOverlap(true);
             getWindow().setAllowReturnTransitionOverlap(true);
             supportPostponeEnterTransition();
@@ -148,9 +148,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView, AppB
         initRecylerView();
 
         parseIntent(getIntent());
-
-        mAppBarLayout.addOnOffsetChangedListener(this);
-        mMaxScrollSize = mAppBarLayout.getTotalScrollRange();
     }
 
 
@@ -239,7 +236,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView, AppB
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        if (view.getId() == mBackgroundProfile.getId()) {
+                        if (view.getId() == mAvatarProfile.getId()) {
                             supportStartPostponedEnterTransition();
                         }
                         return false;
@@ -247,7 +244,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView, AppB
 
                     @Override
                     public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        if (view.getId() == mBackgroundProfile.getId()) {
+                        if (view.getId() == mAvatarProfile.getId()) {
                             supportStartPostponedEnterTransition();
                         }
                         return false;
@@ -270,30 +267,9 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView, AppB
     @Override
     public void setHeaderText(String s) {
         mHeaderText.setText(String.format("\"%s\"", s));
-        mHeaderText.invalidate();
-        nestedScrollView.scrollTo(0, 0);
     }
 
-    @Override
-    public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-        if (mMaxScrollSize == 0) {
-            mMaxScrollSize = appBarLayout.getTotalScrollRange();
-        }
-        int percentage = (Math.abs(verticalOffset)) * 100 / mMaxScrollSize;
-        if (percentage >= PERCENTAGE_TO_ANIMATE_AVATAR && mIsAvatarShown) {
-            mIsAvatarShown = false;
-            mAvatarProfile.animate()
-                    .scaleY(0).scaleX(0)
-                    .setDuration(200)
-                    .start();
-        }
-        if (percentage <= PERCENTAGE_TO_ANIMATE_AVATAR && !mIsAvatarShown) {
-            mIsAvatarShown = true;
-            mAvatarProfile.animate()
-                    .scaleY(1).scaleX(1)
-                    .start();
-        }
-    }
+
 
     @Override
     protected void onPause() {

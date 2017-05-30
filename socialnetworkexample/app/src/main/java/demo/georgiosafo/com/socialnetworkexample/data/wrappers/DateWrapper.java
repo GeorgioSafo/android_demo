@@ -63,10 +63,10 @@ public class DateWrapper {
         String text;
         switch (type) {
             case TODAY:
-                text = "СЕГОДНЯ";
+                text = SocialNetworkExampleApp.getSocialNetworkExampleApp().getResources().getString(R.string.today);
                 break;
             case YESTERDAY:
-                text = "ВЧЕРА";
+                text = SocialNetworkExampleApp.getSocialNetworkExampleApp().getResources().getString(R.string.yesterday);
                 break;
             default:
                 text = calendar.get(Calendar.DAY_OF_MONTH) + " " + SocialNetworkExampleApp.getSocialNetworkExampleApp().getResources().getStringArray(R.array.months)[calendar.get(Calendar.MONTH)].toUpperCase() + " " + calendar.get(Calendar.YEAR);

@@ -5,6 +5,8 @@
     <string name="transitionTitle">transitionTitle</string>
     <string name="date_format_mask">dd-MM-yyyy\'T\'HH:mm:ss</string>
     <string name="here_is_comment">Here is comment...</string>
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
 
     <string-array name="months">
         <item>January</item>

@@ -31,9 +31,9 @@ import rx.Observable;
 
 public interface SocialNetworkExampleApi {
 
-    @GET("a828a5cca4460512767bf80a321d465c/raw/bf8e21fbe871c60288489bb0e62ee89ec7aeb48c/gistfile1.txt")
+    @GET("users.json")
     Observable<List<UserRemoteData>> getUsers();
 
-    @GET("caa5ed4ddfca464e968772493adaab97/raw/7c69465dd163480dae8e825ba63694a50abc7d3c/gistfile1.txt")
+    @GET("user_news.json")
     Observable<List<UserNewsRemoteData>> getNews();
 }

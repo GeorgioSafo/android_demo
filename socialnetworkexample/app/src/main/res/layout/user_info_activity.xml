@@ -37,14 +37,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
-                    android:scaleType="centerCrop"
-                    android:transitionName="@string/transitionAvatar" />
+                    android:scaleType="centerCrop" />
 
                 <View
                     android:id="@+id/transparent_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@color/colorTransparent50percent" />
+
+                <ImageView
+                    android:id="@+id/avatar_imageView_detail"
+                    android:layout_width="96dp"
+                    android:layout_height="96dp"
+                    android:layout_centerInParent="true"
+                    android:layout_gravity="center"
+                    android:transitionName="@string/transitionAvatar" />
             </RelativeLayout>
 
             <include
@@ -65,20 +72,20 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:descendantFocusability="blocksDescendants">
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp">
+                android:padding="32dp">
 
                 <TextView
                     android:id="@+id/header_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/here_is_comment"
                     android:lineSpacingExtra="8dp"
+                    android:text="@string/here_is_comment"
                     android:textColor="@color/icons"
                     android:textSize="14sp"
                     android:textStyle="italic" />
@@ -96,7 +103,8 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="true" />
+                    android:layout_alignParentTop="true"
+                    android:nestedScrollingEnabled="false" />
 
                 <ProgressBar
                     android:id="@+id/progress_bar"
@@ -115,22 +123,10 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:background="@color/colorAccent"
-        android:clickable="true"
-        android:elevation="6dp"
-        android:focusable="true"
         android:src="@drawable/ic_share"
-        app:layout_anchor="@+id/nestedScrollView"
+        app:borderWidth="0dp"
+        app:elevation="3dp"
+        app:layout_anchor="@+id/appbar"
         app:layout_anchorGravity="bottom|end|right" />
-
-    <ImageView
-        android:id="@+id/avatar_imageView_detail"
-        android:layout_width="96dp"
-        android:layout_height="96dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
-        android:elevation="50dp"
-        app:layout_anchor="@id/backgroundProfile"
-        app:layout_anchorGravity="center"
-        app:layout_scrollFlags="scroll" />
 
 </android.support.design.widget.CoordinatorLayout>

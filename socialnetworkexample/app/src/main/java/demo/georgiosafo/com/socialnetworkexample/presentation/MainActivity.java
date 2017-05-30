@@ -18,12 +18,14 @@
 package demo.georgiosafo.com.socialnetworkexample.presentation;
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.util.Pair;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -78,6 +80,8 @@ public class MainActivity extends BaseActivity implements MainView {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getWindow().setSharedElementsUseOverlay(false);
         }
+        progressBar.getIndeterminateDrawable()
+                .setColorFilter(ContextCompat.getColor(this, R.color.icons), PorterDuff.Mode.SRC_IN );
         mainPresenter.loadUsers();
     }
 
