@@ -19,6 +19,8 @@ package demo.georgiosafo.com.socialnetworkexample.presentation.presenters;
 
 import java.util.List;
 
+import demo.georgiosafo.com.socialnetworkexample.R;
+import demo.georgiosafo.com.socialnetworkexample.SocialNetworkExampleApp;
 import demo.georgiosafo.com.socialnetworkexample.data.model.local.UserLocalData;
 import demo.georgiosafo.com.socialnetworkexample.domain.interactor.interfaces.IUserInteractor;
 import demo.georgiosafo.com.socialnetworkexample.presentation.presenters.interfaces.IMainPresenter;
@@ -81,11 +83,12 @@ public class MainPresenter implements IMainPresenter {
         @Override
         public void onError(Throwable e) {
             mainView.hideProgress();
-            mainView.showError(e.getMessage());
+            mainView.showError(SocialNetworkExampleApp.getSocialNetworkExampleApp().getString(R.string.common_error_unknown));
         }
 
         @Override
         public void onNext(List<UserLocalData> userLocalDatas) {
+            mainView.hideError();
             mainView.hideProgress();
             mainView.showUsers(userLocalDatas);
         }

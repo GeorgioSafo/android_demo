@@ -33,6 +33,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -69,6 +70,12 @@ public class MainActivity extends BaseActivity implements MainView {
 
     private UserAdapter userAdapter;
 
+    @Bind(R.id.error_layout)
+    View errorView;
+
+    @Bind(R.id.error_text)
+    TextView errorText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +88,7 @@ public class MainActivity extends BaseActivity implements MainView {
             getWindow().setSharedElementsUseOverlay(false);
         }
         progressBar.getIndeterminateDrawable()
-                .setColorFilter(ContextCompat.getColor(this, R.color.icons), PorterDuff.Mode.SRC_IN );
+                .setColorFilter(ContextCompat.getColor(this, R.color.icons), PorterDuff.Mode.SRC_IN);
         mainPresenter.loadUsers();
     }
 
@@ -117,7 +124,17 @@ public class MainActivity extends BaseActivity implements MainView {
 
     @Override
     public void showError(String errorMessage) {
-        Snackbar.make(userList, errorMessage, Toast.LENGTH_SHORT).show();
+        if (userAdapter != null && userAdapter.getItemCount() > 0) {
+            Snackbar.make(userList, errorMessage, Toast.LENGTH_SHORT).show();
+        } else {
+            errorView.setVisibility(View.VISIBLE);
+            errorText.setText(errorMessage);
+        }
+    }
+
+    @Override
+    public void hideError() {
+        errorView.setVisibility(View.GONE);
     }
 
     @Override

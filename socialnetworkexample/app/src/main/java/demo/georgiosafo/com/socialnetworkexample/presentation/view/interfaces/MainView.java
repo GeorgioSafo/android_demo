@@ -29,6 +29,7 @@ import demo.georgiosafo.com.socialnetworkexample.data.model.local.UserLocalData;
  */
 
 public interface MainView extends BaseView {
+
     void showUsers(List<UserLocalData> userLocalDatas);
 
     void startTransition(Pair<View, String>[] pair, UserLocalData user);

@@ -98,6 +98,7 @@ public class UserInfoPresenter implements IUserInfoPresenter {
 
         @Override
         public void onNext(List<UserNewsLocalData> userLocalDatas) {
+            view.hideError();
             view.hideProgress();
             view.setHistory(userLocalDatas);
         }

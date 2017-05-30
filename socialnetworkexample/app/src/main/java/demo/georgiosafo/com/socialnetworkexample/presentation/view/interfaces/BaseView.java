@@ -24,7 +24,9 @@ package demo.georgiosafo.com.socialnetworkexample.presentation.view.interfaces;
 interface BaseView {
     void showProgress();
 
+    void hideProgress();
+
     void showError(String errorMessage);
 
-    void hideProgress();
+    void hideError();
 }

@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -37,6 +38,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -59,16 +61,12 @@ import demo.georgiosafo.com.socialnetworkexample.presentation.presenters.interfa
 import demo.georgiosafo.com.socialnetworkexample.presentation.view.adapters.UserNewsAdapter;
 import demo.georgiosafo.com.socialnetworkexample.presentation.view.interfaces.UserInfoView;
 
-public class UserInfoActivity extends BaseActivity implements UserInfoView{
+public class UserInfoActivity extends BaseActivity implements UserInfoView {
 
     public static final String USER_ID = "user_id";
     public static final String USER_TITLE = "user_title";
-    private static final int PERCENTAGE_TO_ANIMATE_AVATAR = 20;
     public static final String USER_AVATAR_URL = "user_avatar_url";
     public static final String USER_HEADER_TEXT = "user_header_text";
-    private boolean mIsAvatarShown = true;
-
-    private int mMaxScrollSize;
 
     @Inject
     IUserInfoPresenter userInfoPresenter;
@@ -108,12 +106,19 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
 
     private UserNewsAdapter userNewsAdapter;
 
+    @Bind(R.id.error_layout)
+    View errorView;
+
+    @Bind(R.id.error_text)
+    TextView errorText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user_info_activity);
         ButterKnife.bind(this);
         collapsingToolbarLayout.getLayoutParams().height = Resources.getSystem().getDisplayMetrics().widthPixels;
+
         // Postpone the transition until the detail image thumbnail is loaded
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
@@ -197,7 +202,17 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
 
     @Override
     public void showError(String errorMessage) {
+        if (userNewsAdapter != null && userNewsAdapter.getItemCount() > 0) {
+            Snackbar.make(historyList, errorMessage, Toast.LENGTH_SHORT).show();
+        } else {
+            errorView.setVisibility(View.VISIBLE);
+            errorText.setText(errorMessage);
+        }
+    }
 
+    @Override
+    public void hideError() {
+        errorView.setVisibility(View.GONE);
     }
 
     @Override
@@ -268,7 +283,6 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView{
     public void setHeaderText(String s) {
         mHeaderText.setText(String.format("\"%s\"", s));
     }
-
 
 
     @Override
