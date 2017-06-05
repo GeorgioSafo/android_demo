@@ -41,7 +41,6 @@ public class RealmService implements IRealmService {
         return realm.allObjects(UserLocalData.class).asObservable().map(userLocalData ->
                 userLocalData.subList(0, userLocalData.size())
         );
-
     }
 
     @Override

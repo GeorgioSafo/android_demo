@@ -33,6 +33,8 @@ import demo.georgiosafo.com.socialnetworkexample.data.utils.TimeZoneUtil;
  */
 
 public class DateWrapper {
+    private static String dateMaskString = "dd-MM-yyyy'T'HH:mm:ss";
+
     /**
      * Parse date from string to long
      *
@@ -40,7 +42,7 @@ public class DateWrapper {
      * @return if success long date else if {@link ParseException} null
      */
     public static Long stringToLong(String stringDate) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(SocialNetworkExampleApp.getSocialNetworkExampleApp().getString(R.string.date_format_mask), Locale.getDefault());
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(dateMaskString, Locale.getDefault());
         try {
             return simpleDateFormat.parse(stringDate).getTime();
         } catch (ParseException e) {

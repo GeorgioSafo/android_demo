@@ -129,6 +129,7 @@ public class UserInfoActivity extends BaseActivity implements UserInfoView {
             slider.excludeTarget(mAvatarProfile, true);
             slider.excludeTarget(mTransparentView, true);
             slider.excludeTarget(mBackgroundProfile, true);
+            slider.excludeTarget(floatingActionButton, true);
 
             Fade fade = new Fade();
             fade.excludeTarget(nestedScrollView, true);

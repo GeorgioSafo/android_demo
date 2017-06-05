@@ -31,7 +31,6 @@ import demo.georgiosafo.com.socialnetworkexample.data.model.remote.UserNewsRemot
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.mock;
 
 /**
  * Created by gevorksafaryan on 17.05.17.
@@ -62,7 +61,7 @@ public class UserNewsWrapperTest {
         //assert
         assertThat(userNewsLocalData, is(instanceOf(UserNewsLocalData.class)));
         assertThat(userNewsLocalData.getLocalId(), is(FAKE_ID));
-        assertThat(userNewsLocalData.getDate(), is(FAKE_DATE));
+        assertThat(userNewsLocalData.getDate(), is(DateWrapper.stringToLong(FAKE_DATE)));
         assertThat(userNewsLocalData.getPost(), is(FAKE_POST));
         assertThat(userNewsLocalData.getTitle(), is(FAKE_TITLE));
     }
@@ -70,8 +69,8 @@ public class UserNewsWrapperTest {
     @Test
     public void testTransformUserEntityCollection() {
         //arrange
-        UserNewsRemoteData mockUserNewsRemoteDataFirst = mock(UserNewsRemoteData.class);
-        UserNewsRemoteData mockUserNewsRemoteDataSecond = mock(UserNewsRemoteData.class);
+        UserNewsRemoteData mockUserNewsRemoteDataFirst = createFakeUserNewsRemoteData();
+        UserNewsRemoteData mockUserNewsRemoteDataSecond = createFakeUserNewsRemoteData();
 
         ArrayList<UserNewsRemoteData> userNewsRemoteDataArrayList = new ArrayList<>(10);
         userNewsRemoteDataArrayList.add(mockUserNewsRemoteDataFirst);
